@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<title>مولّد كلمات مرور قوية</title>
+
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        background: #000;
+        font-family: 'Tahoma', Arial, sans-serif;
+        color: #fff;
+    }
+
+    /* النجوم المتساقطة */
+    .star {
+        position: absolute;
+        top: -10px;
+        color: red;
+        font-size: 10px;
+        animation: fall linear infinite;
+        opacity: 0.7;
+    }
+    @keyframes fall {
+        to { transform: translateY(110vh) rotate(360deg); }
+    }
+
+    /* الصناديق */
+    .box {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(15, 15, 15, 0.95);
+        width: 360px;
+        padding: 25px;
+        border-radius: 15px;
+        text-align: center;
+        box-shadow: 0 0 25px rgba(255, 0, 0, 0.6);
+        z-index: 10;
+        animation: boxGlow 4s linear infinite;
+    }
+
+    /* إطار أحمر متحرك حول الصندوق */
+    @keyframes boxGlow {
+        0%   { box-shadow: 0 0 10px red; }
+        50%  { box-shadow: 0 0 25px #ff0000; }
+        100% { box-shadow: 0 0 10px red; }
+    }
+
+    img {
+        width: 180px;
+        margin-bottom: 15px;
+        border-radius: 10px;
+    }
+
+    input {
+        width: 90%;
+        padding: 12px;
+        border: 2px solid #b30000;
+        background: #111;
+        color: #fff;
+        border-radius: 8px;
+        margin-top: 10px;
+        text-align: center;
+        font-size: 17px;
+        transition: 0.3s;
+    }
+
+    input:focus {
+        border-color: red;
+        box-shadow: 0 0 8px red;
+        outline: none;
+    }
+
+    button {
+        width: 95%;
+        padding: 12px;
+        margin-top: 12px;
+        border-radius: 8px;
+        border: none;
+        background: #900;
+        color: white;
+        font-size: 17px;
+        cursor: pointer;
+        transition: 0.25s;
+    }
+
+    /* تأثير Hover – يكبر ويتغير لونه */
+    button:hover {
+        background: #b30000;
+        transform: scale(1.07);
+        box-shadow: 0 0 12px red;
+    }
+
+    #password {
+        font-size: 22px;
+        margin-top: 15px;
+        direction: ltr;
+        color: #ff4d4d;
+        text-shadow: 0 0 10px red;
+    }
+</style>
+</head>
+<body>
+
+<!-- صندوق تسجيل الدخول -->
+<div class="box" id="loginBox">
+    <img src="logo.jpg" alt="logo">
+    <h2 style="color:red;">🔐 تسجيل الدخول</h2>
+
+    <input id="user" placeholder="اسم المستخدم">
+    <input id="pass" placeholder="كلمة المرور" type="password">
+    <input id="key" placeholder="مفتاح التفعيل">
+
+    <button onclick="checkLogin()">تسجيل الدخول</button>
+
+    <p id="loginMsg" style="color:red; margin-top:10px;"></p>
+</div>
+
+<!-- صندوق الأداة -->
+<div class="box" id="toolBox" style="display:none;">
+    <h2 style="color:red;">🔥 مولّد كلمات مرور WiFi</h2>
+
+    <input id="ssid" placeholder="اسم الشبكة">
+    <button onclick="generatePassword()">توليد كلمة مرور قوية</button>
+
+    <div id="password">---</div>
+
+    <button onclick="copyPassword()">نسخ كلمة المرور</button>
+</div>
+
+<script>
+    /* تسجيل الدخول */
+    function checkLogin() {
+        const user = document.getElementById("user").value;
+        const pass = document.getElementById("pass").value;
+        const key  = document.getElementById("key").value;
+
+        if (user === "XIT" && pass === "EXTRA" && key === "WIFIPASS1233") {
+            document.getElementById("loginBox").style.display = "none";
+            document.getElementById("toolBox").style.display = "block";
+        } else {
+            document.getElementById("loginMsg").innerText = "❌ معلومات الدخول غير صحيحة!";
+        }
+    }
+
+    /* توليد كلمة مرور قوية جدًا */
+    function generatePassword() {
+        const ssid = document.getElementById("ssid").value.trim();
+
+        if (ssid === "") {
+            alert("الرجاء كتابة اسم الشبكة أولاً!");
+            return;
+        }
+
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_=+[]{}?";
+        let pass = "";
+
+        for (let i = 0; i < 18; i++) {
+            pass += chars[Math.floor(Math.random() * chars.length)];
+        }
+
+        document.getElementById("password").innerText = pass;
+    }
+
+    /* نسخ كلمة المرور */
+    function copyPassword() {
+        const pass = document.getElementById("password").innerText;
+        navigator.clipboard.writeText(pass);
+        alert("✔ تم نسخ كلمة المرور!");
+    }
+
+    /* إنشاء النجوم المتساقطة */
+    function createStars() {
+        for (let i = 0; i < 90; i++) {
+            let star = document.createElement("div");
+            star.innerHTML = "★";
+            star.className = "star";
+            star.style.left = Math.random() * 100 + "vw";
+            star.style.animationDuration = (3 + Math.random() * 4) + "s";
+            document.body.appendChild(star);
+        }
+    }
+    createStars();
+</script>
+
+</body>
+</html>
